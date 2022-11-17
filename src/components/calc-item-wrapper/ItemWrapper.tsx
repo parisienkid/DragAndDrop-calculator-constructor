@@ -1,45 +1,81 @@
 import React, { DragEventHandler, FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../core/store';
+import { setCurrentItem, addItem, pushItem, setCurrentDropItem } from '../../core/reducers/sortSlice';
 import './wrapper.sass';
 
 interface ItemWrapperProps {
-    children: React.ReactNode
+    children: React.ReactNode | React.ReactElement,
+    id: number,
+    left?: boolean,
+    right?: boolean,
 }
 
-const ItemWrapper: FC<ItemWrapperProps> = ({children}) => {
+const ItemWrapper: FC<ItemWrapperProps> = ({children, id, left, right}) => {
+
+    const {currentItem} = useSelector((state: RootState) => state.sort)
+
+    const dispatch = useDispatch();
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        console.log('start')
-    }
-
-    const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        console.log('leave')
-    }
-
-    const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        console.log('end')
-    }
-
-    const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        console.log('over')
+        dispatch(setCurrentItem(id));
     }
 
     const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        console.log('drop')
+        const target = e.currentTarget as HTMLDivElement;
+        if (target.parentElement?.classList.contains('area')) {
+            target.classList.remove('active');
+            
+        }
+    }
+
+    const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const target = e.currentTarget as Element;
+        if (target.className === 'wrapper-a') {
+            target.classList.add('active');
+        }
+    }
+
+    const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const target = e.currentTarget as Element;
+        target.classList.remove('active');
+    }
+
+    const dragEndHandler = (e :React.DragEvent<HTMLDivElement>) => {
+        const target = e.currentTarget as Element;
+        target.classList.remove('active');
     }
 
     return (
-        <div 
-            draggable 
-            onDragStart={(e) => dragStartHandler(e)}
-            onDragLeave={(e) => dragLeaveHandler(e)}
-            onDragEnd={(e) => dragEndHandler(e)}
-            onDragOver={(e) => dragOverHandler(e)}
-            onDrop={(e) => dropHandler(e)}
-            className="wrapper">
-            {children}
-        </div>
+        <>
+        {
+            left 
+            ?
+            <div
+                id={`${id}`}
+                draggable 
+                onDragStart={(e) => dragStartHandler(e)}
+                onDrop={(e) => dropHandler(e)}
+                className="wrapper">
+                {children}
+            </div>
+            :
+            <div
+                id={`${id}`}
+                draggable 
+                onDragStart={(e) => dragStartHandler(e)}
+                onDragLeave={(e) => dragLeaveHandler(e)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDrop={(e) => dropHandler(e)}
+                onDragOver={(e) => dragOverHandler(e)}
+                className="wrapper-a">
+                {children}
+            </div>
+        }
+        </>
     );
 };
 

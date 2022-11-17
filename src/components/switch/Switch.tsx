@@ -6,7 +6,7 @@ import constructor from '../../assets/constructor.svg';
 import eye from '../../assets/eye.svg';
 
 const Switch: FC = () => {
-    const [handle, setHandle] = useState(false);
+    const [handle, setHandle] = useState(true);
 
     const toggleSwitch = () => setHandle(!handle);
 
