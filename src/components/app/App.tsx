@@ -22,11 +22,15 @@ const App: FC = () => {
           <div className="areas">
             <div className="constructor__items">
               {
-                calcItems[0].items.map(item => 
-                  <ItemWrapper left id={item.id} key={item.id}>
+                calcItems 
+                ?
+                calcItems[0].items.map((item, i) => 
+                  <ItemWrapper left id={item.id} key={item.id} position={i + 1}>
                     {setContent(item.name)}
                   </ItemWrapper>
                 )
+                :
+                null
               }
             </div>
             <Zone/> 

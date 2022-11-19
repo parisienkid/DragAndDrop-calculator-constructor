@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../core/store';
-import { pushItem } from '../../core/reducers/sortSlice';
+import { pushItem, sortItems } from '../../core/reducers/sortSlice';
 import ItemWrapper from '../calc-item-wrapper/ItemWrapper';
 import { setContent } from '../../core/utils/setContent';
 import './zone.sass';
@@ -42,7 +42,18 @@ const Zone: FC<ZoneProps> = ({children}) => {
     const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDropped(!dropped);
-
+        let newCalcItems = [...calcItems];
+        newCalcItems = newCalcItems.map(item => {
+            let newItem = {...item};
+            newItem.items = newItem.items.filter(item => {
+                if (item.id !== currentItem) {
+                    return item
+                }
+            });
+            return newItem
+        });
+        
+        dispatch(sortItems(newCalcItems));
         switch(currentItem) {
             case 1:
                 dispatch(pushItem({id: 1, name: 'total'}))
@@ -79,11 +90,15 @@ const Zone: FC<ZoneProps> = ({children}) => {
             <div 
                 className="area">
                 {
-                    calcItems[1].items.map(item => 
-                    <ItemWrapper right id={item.id} key={item.id}>
+                    calcItems
+                    ?
+                    calcItems[1].items.map((item, i) => 
+                    <ItemWrapper right id={i + 1} key={item.id} position={i + 1}>
                         {setContent(item.name)}
                     </ItemWrapper>
                     )
+                    :
+                    null
                 }
             </div>
         }

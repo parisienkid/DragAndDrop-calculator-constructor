@@ -34,9 +34,8 @@ const sortSlice = createSlice({
             state.calcItems[1].items.push(action.payload);
         },
         addItem: (state, action) => {
-
-        }
-
+            state.calcItems[1].items.splice(+action.payload.id, 0, action.payload.item);
+        },
     }
 })
 
