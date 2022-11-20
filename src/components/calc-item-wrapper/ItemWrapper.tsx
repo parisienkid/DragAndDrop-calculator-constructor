@@ -1,69 +1,45 @@
-import React, { DragEventHandler, FC } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../core/store';
-import { setCurrentItem, addItem, sortItems, pushItem, setCurrentDropItem } from '../../core/reducers/sortSlice';
+import { setCurrentItemId, setCurrentItemPosition, addItem, sortItems } from '../../core/reducers/sortSlice';
+import deleteCurrentItem from '../../core/utils/deleteCurrent';
+import makeItem from '../../core/utils/makeItem';
 import './wrapper.sass';
 
 interface ItemWrapperProps {
     children: React.ReactNode | React.ReactElement,
     id: number,
     left?: boolean,
-    right?: boolean,
     position: number
 }
 
-const ItemWrapper: FC<ItemWrapperProps> = ({children, id, left, right, position}) => {
+const ItemWrapper: FC<ItemWrapperProps> = ({children, id, left, position}) => {
 
-    const {currentItem} = useSelector((state: RootState) => state.sort)
+    const {currentItemId} = useSelector((state: RootState) => state.sort)
+    const {currentItemPosition} = useSelector((state: RootState) => state.sort)
     const {calcItems} = useSelector((state: RootState) => state.sort)
 
     const dispatch = useDispatch();
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        dispatch(setCurrentItem(id));
+        dispatch(setCurrentItemId(id));
+        dispatch(setCurrentItemPosition(position));
     }
 
     const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-
+        e.stopPropagation();
         e.preventDefault();
         const target = e.currentTarget as HTMLDivElement;
         target.classList.remove('active');
-
-        function deleteCurrentItem() {
-            let newCalcItems = [...calcItems];
-            newCalcItems = newCalcItems.map(item => {
-                let newItem = {...item};
-                newItem.items = newItem.items.filter(item => {
-                    if (item.id !== currentItem) {
-                        return item
-                    }
-                });
-                return newItem
-            });
-            dispatch(sortItems(newCalcItems));
+        dispatch(sortItems(deleteCurrentItem(calcItems, currentItemId)))
+        function correctPos() {
+            if (currentItemPosition < position && !left) return position - 1
+            else return position
         }
-        
-        deleteCurrentItem();
-
-        const attr = target.getAttribute('data-position');
-        
-
-        let addedItem = {};
-        switch(currentItem) {
-            case 1:
-                addedItem = {id: 1, name: 'total'}
-                break
-            case 2:
-                addedItem = {id: 2, name: 'operators'}
-                break
-            case 3: 
-                addedItem = {id: 3, name: 'numbers'}
-                break
-            case 4:
-                addedItem = {id: 4, name: 'equal'}
-                break
-        }
-        dispatch(addItem({id: attr, item: addedItem}))
+        dispatch(addItem({
+            id: correctPos(), 
+            item: makeItem(currentItemId)
+        }))
     }           
 
     const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -91,7 +67,6 @@ const ItemWrapper: FC<ItemWrapperProps> = ({children, id, left, right, position}
             left 
             ?
             <div
-                id={`${id}`}
                 data-position={position}
                 draggable 
                 onDragStart={(e) => dragStartHandler(e)}
@@ -100,7 +75,6 @@ const ItemWrapper: FC<ItemWrapperProps> = ({children, id, left, right, position}
             </div>
             :
             <div
-                id={`${id}`}
                 data-position={position}
                 draggable 
                 onDragStart={(e) => dragStartHandler(e)}

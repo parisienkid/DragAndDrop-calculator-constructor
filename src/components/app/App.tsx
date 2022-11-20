@@ -1,38 +1,20 @@
-import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../core/store';
-import './app.sass';
+import { FC } from 'react';
+
 import Switch from '../switch/Switch';
-import ItemWrapper from '../calc-item-wrapper/ItemWrapper';
-import { setContent } from '../../core/utils/setContent';
+import DndItems from '../dnd-items/DndItems';
 import Zone from '../zone/Zone';
+
+import './app.sass';
 
 
 const App: FC = () => {
-
-  const dispatch = useDispatch();
-
-  const {calcItems} = useSelector((state: RootState) => state.sort)
-
   return (
     <div className="App">
       <div className="container">
         <div className="constructor">
           <Switch/>
           <div className="areas">
-            <div className="constructor__items">
-              {
-                calcItems 
-                ?
-                calcItems[0].items.map((item, i) => 
-                  <ItemWrapper left id={item.id} key={item.id} position={i + 1}>
-                    {setContent(item.name)}
-                  </ItemWrapper>
-                )
-                :
-                null
-              }
-            </div>
+            <DndItems/>
             <Zone/> 
           </div>
         </div>

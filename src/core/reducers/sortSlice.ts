@@ -1,6 +1,23 @@
 import { createSlice,  } from "@reduxjs/toolkit";
 
-const initialState = {
+interface calcItemI {
+    id: number;
+    title: string;
+    items: {
+        id: number;
+        name: string;
+    }[];
+}
+
+export interface calcItemsI extends Array<calcItemI>{};
+
+export interface initialStateI {
+    calcItems: calcItemsI
+    currentItemId: number
+    currentItemPosition: number
+}
+
+const initialState: initialStateI = {
     calcItems: [
         {id: 1, title: 'constructor', items: [
             {id: 1, name: 'total'},
@@ -12,9 +29,8 @@ const initialState = {
             
         ]}
     ],
-    currentArea: '',
-    currentItem: 0,
-    currentDropItem: 0,
+    currentItemId: 0,
+    currentItemPosition: 0,
 }
 
 const sortSlice = createSlice({
@@ -24,11 +40,11 @@ const sortSlice = createSlice({
         sortItems: (state, action) => {
             state.calcItems = action.payload
         },
-        setCurrentItem: (state, action) => {
-            state.currentItem = action.payload
+        setCurrentItemId: (state, action) => {
+            state.currentItemId = action.payload
         },
-        setCurrentDropItem: (state, action) => {
-            state.currentDropItem = action.payload
+        setCurrentItemPosition: (state, action) => {
+            state.currentItemPosition = action.payload
         },
         pushItem: (state, action) => {
             state.calcItems[1].items.push(action.payload);
@@ -41,6 +57,6 @@ const sortSlice = createSlice({
 
 const {reducer, actions} = sortSlice;
 
-export const {sortItems, setCurrentItem, pushItem, addItem, setCurrentDropItem} = actions;
+export const {sortItems, setCurrentItemId, setCurrentItemPosition, pushItem, addItem} = actions;
 
 export default reducer;
