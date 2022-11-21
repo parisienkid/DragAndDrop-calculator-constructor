@@ -15,9 +15,10 @@ export interface initialStateI {
     calcItems: calcItemsI
     currentItemId: number
     currentItemPosition: number
+    currentItemZone: string
 }
 
-const initialState: initialStateI = {
+export const initialState: initialStateI = {
     calcItems: [
         {id: 1, title: 'constructor', items: [
             {id: 1, name: 'total'},
@@ -31,6 +32,7 @@ const initialState: initialStateI = {
     ],
     currentItemId: 0,
     currentItemPosition: 0,
+    currentItemZone: ''
 }
 
 const sortSlice = createSlice({
@@ -46,6 +48,9 @@ const sortSlice = createSlice({
         setCurrentItemPosition: (state, action) => {
             state.currentItemPosition = action.payload
         },
+        setCurrentItemZone: (state, action) => {
+            state.currentItemZone = action.payload
+        },
         pushItem: (state, action) => {
             state.calcItems[1].items.push(action.payload);
         },
@@ -57,6 +62,6 @@ const sortSlice = createSlice({
 
 const {reducer, actions} = sortSlice;
 
-export const {sortItems, setCurrentItemId, setCurrentItemPosition, pushItem, addItem} = actions;
+export const {sortItems, setCurrentItemId, setCurrentItemPosition, pushItem, addItem, setCurrentItemZone} = actions;
 
 export default reducer;

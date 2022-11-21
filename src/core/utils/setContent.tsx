@@ -27,7 +27,7 @@ export const setContent = (name: string | undefined) => {
                   <Btn><Number name='8'></Number></Btn>
                   <Btn><Number name='9'></Number></Btn>
                   <Btn className='zero'><Number name='0'></Number></Btn>
-                  <Btn><Number name=','></Number></Btn>
+                  <Btn><Number name='.'></Number></Btn>
                 </div>
         case 'equal':
           return  <div className="equal">

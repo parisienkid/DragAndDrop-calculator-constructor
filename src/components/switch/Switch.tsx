@@ -1,12 +1,33 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
+import { changeStatus } from '../../core/reducers/calcSlice';
+import { sortItems } from '../../core/reducers/sortSlice';
+import { initialState as sortState } from '../../core/reducers/sortSlice';
+import { resetValue, resetTotal, resetCounter, setOperator, changeMode } from '../../core/reducers/calcSlice';
 import './switch.sass';
 
-import constructor from '../../assets/constructor.svg';
-import eye from '../../assets/eye.svg';
 
 const Switch: FC = () => {
     const [handle, setHandle] = useState(true);
+
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        if (handle) {
+            dispatch(changeStatus('constructor'))
+            dispatch(sortItems(sortState.calcItems))
+            dispatch(resetValue())
+            dispatch(resetTotal())
+            dispatch(resetCounter())
+            dispatch(setOperator('none'))
+            dispatch(changeMode('value'))
+        } else {
+            dispatch(changeStatus('calculator'))
+        }
+    },[handle]);
+
 
     const toggleSwitch = () => setHandle(!handle);
 

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../core/store';
 import { pushItem, sortItems } from '../../core/reducers/sortSlice';
@@ -14,10 +14,17 @@ const Zone: FC = () => {
     const dispatch = useDispatch();
     
     const {currentItemId} = useSelector((state: RootState) => state.sort)
+    const {status} = useSelector((state: RootState) => state.calc)
 
     const [dropped, setDropped] = useState(false);
 
     const {calcItems} = useSelector((state: RootState) => state.sort)
+
+    useEffect(() => {
+        if (status == 'calculator') {
+            setDropped(false);
+        }
+    }, [status]);
 
     function toggleParentClass(target: Element) {
         if (target.parentElement?.classList.contains('zone')) {
@@ -52,12 +59,10 @@ const Zone: FC = () => {
         dispatch(pushItem(makeItem(currentItemId)))
     }
 
-    
-
     return (
        <>
         {
-            dropped == false
+            dropped == false && status === 'constructor'
             ?
             <div 
                 className="zone"
@@ -71,6 +76,8 @@ const Zone: FC = () => {
                 </svg>
             </div>
             :
+            dropped === true && status === 'constructor'
+            ?
             <div 
                 className="area"
                 onDragOver={(e) => dragOverHandler(e)}
@@ -82,7 +89,23 @@ const Zone: FC = () => {
                     calcItems
                     ?
                     calcItems[1].items.map((item, i) => 
-                    <ItemWrapper id={item.id} key={item.id} position={i + 1}>
+                    <ItemWrapper zone='right' id={item.id} key={item.id} position={i + 1}>
+                        {setContent(item.name)}
+                    </ItemWrapper>
+                    )
+                    :
+                    null
+                }
+            </div>
+            :
+            <div 
+                className="area"
+            >
+                {
+                    calcItems
+                    ?
+                    calcItems[1].items.map((item, i) => 
+                    <ItemWrapper zone='right' id={item.id} key={item.id} position={i + 1}>
                         {setContent(item.name)}
                     </ItemWrapper>
                     )
