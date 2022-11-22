@@ -1,46 +1,37 @@
-# Getting Started with Create React App
+| `Status`: Completed |
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About the Project:
 
-## Available Scripts
+Drag and drop calculator constructor.
 
-In the project directory, you can run:
+Contains all functions of the default calculator. You can also create your own version of the calculator with blocks "sum", "numbers", "operators", "equals".
 
-### `npm start`
+*click, click* - https://parisienkid.github.io/drag-and-drop-calculator-constructor/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Setup / Installation:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```jsx
+npm i
+npm start
+```
 
-### `npm test`
+[http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Used:
 
-### `npm run build`
+* React
+* Redux
+* TS
+* Sass, scss
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## View now!
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img width="1310" alt="Снимок экрана 2022-11-22 в 03 57 46" src="https://user-images.githubusercontent.com/69765307/203188542-980e94ba-ae7c-4e8c-b1e6-377897953102.png">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+https://user-images.githubusercontent.com/69765307/203188259-a5720462-603f-4e60-9340-a7496dd8548d.mov
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+https://user-images.githubusercontent.com/69765307/203188372-9b46f2de-9506-42e5-b89e-cf5b0a3542a2.mov
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
